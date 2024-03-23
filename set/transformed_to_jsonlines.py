@@ -44,21 +44,30 @@ def main(predictions_location, test_location, input_dir, output_location):
                 counts["true_negatives"] += 1
     for count_type, count in counts.items():
         print(f"{count} {count_type.replace('_', ' ')}")
-    # attributes are: project, commit_id, target, func, idx
-    for true_positive in true_positives:
-        input_folder = os.path.join(input_dir, f"{true_positive['idx']}")
-        if not Path.exists(Path(input_folder)):
-            print(f"Skipped failed or non-localized parse {true_positive['idx']}")
-            continue
-        for file in os.listdir(input_folder):
-            input_filepath = os.path.join(input_folder, file)
-            if not Path.exists(Path(input_filepath)):
-                raise AssertionError(f"Improperly joined file {file} to folder {input_folder}")
-            with open(input_filepath) as input_file:
-                pass
-        # with open(input_folder) as output_file:
-        #    pass
-        print(input_folder)
+    with open(output_location, 'w') as output_file:
+        # attributes are: project, commit_id, target, func, idx
+        index = 0
+        for true_positive in true_positives:
+            input_folder = os.path.join(input_dir, f"{true_positive['idx']}")
+            if not Path.exists(Path(input_folder)):
+                print(f"Skipped failed or non-localized parse {true_positive['idx']}")
+                continue
+            for file in os.listdir(input_folder):
+                output = {}
+                input_filepath = os.path.join(input_folder, file)
+                if not Path.exists(Path(input_filepath)):
+                    raise AssertionError(f"Improperly joined file {file} to folder {input_folder}")
+                with open(input_filepath) as input_file:
+                    output['initial_idx'] = true_positive['idx']
+                    output['filename'] = file
+                    output['target'] = 1
+                    output['func'] = input_file.read()
+                    output['idx'] = index
+                    index += 1
+                output_file.writelines([json.dumps(output)])
+            # with open(input_folder) as output_file:
+            #    pass
+            print(input_folder)
     print(len(true_positives))
 
 
