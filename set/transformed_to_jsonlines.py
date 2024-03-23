@@ -52,7 +52,6 @@ def main(predictions_location, test_location, input_dir):
         # with open(input_folder) as output_file:
         #    pass
         print(input_folder)
-
     print(len(true_positives))
 
 
