@@ -9,9 +9,9 @@ from pathlib import Path
 
 def main(predictions_location, test_location, output_dir):
     """
-    @param output_dir: Path to a folder where output files will be written
     @param predictions_location: Path to a text file that has index-prediction mapping
     @param test_location: Path to a file that has index and other info about each test file
+    @param output_dir: Path to a folder where output files will be written
     """
     positives = {}
     counts = {

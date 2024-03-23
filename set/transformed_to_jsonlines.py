@@ -7,11 +7,12 @@ import sys
 from pathlib import Path
 
 
-def main(predictions_location, test_location, input_dir):
+def main(predictions_location, test_location, input_dir, output_location):
     """
-    @param input_dir: Path to a folder where transformed files have been written
     @param predictions_location: Path to a text file that has index-prediction mapping
     @param test_location: Path to a file that has index and other info about each test file
+    @param input_dir: Path to a folder where transformed files have been written
+    @param output_location: Path to a file where the output will be written
     """
     if not Path.exists(Path(input_dir)):
         raise AssertionError(f"Path {input_dir} must exist!")
@@ -49,6 +50,12 @@ def main(predictions_location, test_location, input_dir):
         if not Path.exists(Path(input_folder)):
             print(f"Skipped failed or non-localized parse {true_positive['idx']}")
             continue
+        for file in os.listdir(input_folder):
+            input_filepath = os.path.join(input_folder, file)
+            if not Path.exists(Path(input_filepath)):
+                raise AssertionError(f"Improperly joined file {file} to folder {input_folder}")
+            with open(input_filepath) as input_file:
+                pass
         # with open(input_folder) as output_file:
         #    pass
         print(input_folder)
