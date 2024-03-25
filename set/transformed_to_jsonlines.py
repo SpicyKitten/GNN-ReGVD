@@ -64,7 +64,7 @@ def main(predictions_location, test_location, input_dir, output_location):
                     output['func'] = input_file.read()
                     output['idx'] = index
                     index += 1
-                output_file.writelines([json.dumps(output)])
+                output_file.writelines([json.dumps(output), os.linesep])
             # with open(input_folder) as output_file:
             #    pass
             print(input_folder)
